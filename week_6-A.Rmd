@@ -34,8 +34,7 @@ We are learning about sampling this week. We are taking the theory of Chapter 5 
 
 ```{r scene 1}
 tibble(replicate = 1:5) %>%
-  mutate(samp = map(replicate, ~ sample_n(urn, 30))) %>%
-  view()
+  mutate(samp = map(replicate, ~ sample_n(urn, 30))) 
 
 
 ```
@@ -47,6 +46,17 @@ tibble(replicate = 1:5) %>%
 **Prompt:** What is the probability that, if you sample 50 beads at random, there will be more red than blue beads in the sample?
 
 
+```{r scene 2}
+
+tibble(replicate = 1:5) %>%
+  mutate(samp = map(replicate, ~ sample_n(urn, 50))) %>%
+  mutate(n_red = map_int(samp, ~ sum(.$color == "red"))) %>%
+  mutate(n_blue = map_int(samp, ~ sum(.$color == "blue"))) %>%
+  mutate(red_wins = n_red > n_blue) %>%
+  summarize(prob = sum(red_wins) / n())
+ 
+  
+```
 
 
 
